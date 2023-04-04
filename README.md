@@ -16,3 +16,11 @@ The tracking algorithm uses the information from the ArUco fiducial markers to d
 
 ## Contributing
 Feel free to contribute to this project by creating new features or fixing existing issues. Please submit a pull request for review.
+
+
+## To install OpenCV on Raspberry Pi 4, follow the steps below:
+```bash
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential cmake pkg-config libjpeg-dev libtiff5-dev libjasper-dev libpng-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libfontconfig1-dev libcairo2-dev libgdk-pixbuf2.0-dev libpango1.0-dev libgtk2.0-dev libgtk-3-dev libatlas-base-dev gfortran libhdf5-dev libhdf5-serial-dev libhdf5-103 python3-pyqt5 python3-dev python3-pip python3-numpy python3-matplotlib python3-scipy python3-sklearn python3-skimage python3-pil python3-pandas python3-opencv
+```
