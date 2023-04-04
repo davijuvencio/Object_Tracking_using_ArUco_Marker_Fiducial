@@ -24,3 +24,32 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install build-essential cmake pkg-config libjpeg-dev libtiff5-dev libjasper-dev libpng-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libfontconfig1-dev libcairo2-dev libgdk-pixbuf2.0-dev libpango1.0-dev libgtk2.0-dev libgtk-3-dev libatlas-base-dev gfortran libhdf5-dev libhdf5-serial-dev libhdf5-103 python3-pyqt5 python3-dev python3-pip python3-numpy python3-matplotlib python3-scipy python3-sklearn python3-skimage python3-pil python3-pandas python3-opencv
 ```
+
+## To perform camera calibration, follow the steps below:
+
+1. Acquire a checkerboard pattern for reference. You can download and print a calibration pattern online.
+
+2. Position a strong light source behind the camera, ensuring that the checkerboard pattern is well illuminated.
+
+3. Stand in front of the camera, showing the checkerboard pattern.
+
+4. Run the Python code
+```bash
+python3 capture_images_for_calibration.py. 
+```
+This code will capture several camera images at different angles and positions.
+
+5. Move the camera in a counterclockwise and clockwise motion, tilting it to the sides and up and down. Be sure to capture images in all positions to obtain the best calibration possible.
+
+6. Select a photo with the checkerboard pattern facing the camera, a photo with the pattern turned sideways, a photo at the transition of the rotation, and a photo with each tilt. Delete the remaining photos.
+
+Now you have enough images to perform camera calibration. With this information, you can proceed with the calibration process using libraries such as OpenCV.
+
+## To calibrate
+run the Python program:
+```bash
+python3 calibration.py 
+```
+This code performs camera calibration using images of a chessboard and generates a calibration matrix and distortion coefficients. To use the code, it is necessary to pass as arguments the path of the directory containing the images of the chessboard, the width and height of the chessboard, and the size of the square in meters. The user can also choose to visualize each image of the chessboard during the calibration process.
+
+The code reads the images from the specified directory, converts each image to grayscale, and detects the corners of the chessboard using the "cv2.findChessboardCorners" function. It then adds the object coordinates (points in 3D in real space) and the image coordinates (points in 2D in the image plane) to two different lists. After all images have been read, the code uses the object and image points lists to generate a calibration matrix and distortion coefficients, using the "cv2.calibrateCamera" function. Finally, it saves the calibration matrix and distortion coefficients in two .npy files.
