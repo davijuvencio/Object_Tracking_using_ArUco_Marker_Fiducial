@@ -1,6 +1,12 @@
+# dir = pics/ Path to folder containing checkerboard images for calibration
+# square_size = 0.03 (3.0 cm == 0.03 m) Length of one edge (in metres)
+# width = 12 Width of checkerboard
+# height = 11 Height of checkerboard
+# visualize = True To visualize each checkerboard image
+
 '''
 Sample Usage:-
-python calibration.py --dir Images/ --square_size 0.03
+python3 calibration.py --dir pics/ --width 12 --height 11 --square_size 0.03 --visualize True
 '''
 
 import numpy as np
@@ -45,8 +51,9 @@ def calibrate(dirpath, square_size, width, height, visualize=False):
             img = cv2.drawChessboardCorners(img, (width, height), corners2, ret)
 
         if visualize:
-            cv2.imshow('img',img)
-            cv2.waitKey(0)
+            # cv2.imshow('img',img)
+            # cv2.waitKey(0)
+            cv2.imwrite('pics/calib_'+fname, img)
 
 
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
@@ -57,15 +64,13 @@ def calibrate(dirpath, square_size, width, height, visualize=False):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument("-d", "--dir", required=True, help="Path to folder containing checkerboard images for calibration")
-    ap.add_argument("-w", "--width", type=int, help="Width of checkerboard (default=9)",  default=12)
-    ap.add_argument("-t", "--height", type=int, help="Height of checkerboard (default=6)", default=11)
+    ap.add_argument("-w", "--width", type=int, help="Width of checkerboard (default=9)",  default=9)
+    ap.add_argument("-t", "--height", type=int, help="Height of checkerboard (default=6)", default=9)
     ap.add_argument("-s", "--square_size", type=float, default=1, help="Length of one edge (in metres)")
     ap.add_argument("-v", "--visualize", type=str, default="False", help="To visualize each checkerboard image")
     args = vars(ap.parse_args())
     
     dirpath = args['dir']
-    # 3.0 cm == 0.03 m
-    # square_size = 0.03
     square_size = args['square_size']
 
     width = args['width']

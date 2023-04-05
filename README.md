@@ -46,10 +46,24 @@ This code will capture several camera images at different angles and positions.
 Now you have enough images to perform camera calibration. With this information, you can proceed with the calibration process using libraries such as OpenCV.
 
 ## To calibrate
-run the Python program:
+run the Python code:
 ```bash
-python3 calibration.py 
+python3 calibration.py --dir pics/ --square_size 0.03 --width 12 --height 11 --visualize True
 ```
 This code performs camera calibration using images of a chessboard and generates a calibration matrix and distortion coefficients. To use the code, it is necessary to pass as arguments the path of the directory containing the images of the chessboard, the width and height of the chessboard, and the size of the square in meters. The user can also choose to visualize each image of the chessboard during the calibration process.
 
 The code reads the images from the specified directory, converts each image to grayscale, and detects the corners of the chessboard using the "cv2.findChessboardCorners" function. It then adds the object coordinates (points in 3D in real space) and the image coordinates (points in 2D in the image plane) to two different lists. After all images have been read, the code uses the object and image points lists to generate a calibration matrix and distortion coefficients, using the "cv2.calibrateCamera" function. Finally, it saves the calibration matrix and distortion coefficients in two .npy files.
+
+## Object Tracking using a Raspberry Pi V2 Camera
+
+Object tracking is the process of identifying and tracking a moving object in a video stream. This is typically done using computer vision techniques that analyze the video frames and identify the object of interest based on its visual features. The Raspberry Pi V2 camera is a popular camera module for object tracking due to its compact size, low cost, and compatibility with the Raspberry Pi board.
+
+To perform object tracking using the Raspberry Pi V2 camera, the camera module is first connected to the Raspberry Pi board and a suitable computer vision library is installed, such as OpenCV. The camera can then be used to capture a video stream, which is analyzed using computer vision techniques to identify and track the object of interest. This may involve techniques such as background subtraction, motion detection, feature tracking, or object recognition.
+
+## Object Tracking using Aruco Fiducial Markers
+
+Aruco fiducial markers are a type of visual marker that can be used for object tracking. These markers are typically black and white squares with unique patterns that can be easily detected by a computer vision system. When placed on an object, the marker can be used to track the position and orientation of the object in the video stream.
+
+To perform object tracking using Aruco fiducial markers, the markers are first printed out and placed on the object of interest. The camera module is then used to capture a video stream, which is analyzed using computer vision techniques to detect and track the position and orientation of the markers. This information can then be used to track the object of interest in the video stream.
+
+One advantage of using Aruco fiducial markers for object tracking is that they are highly robust and can be detected even in challenging lighting conditions or when the object is partially occluded. Additionally, multiple markers can be used to track different parts of the object, allowing for more accurate tracking and improved object recognition
