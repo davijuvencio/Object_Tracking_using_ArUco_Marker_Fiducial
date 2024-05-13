@@ -9,12 +9,14 @@ class Davi:
         self.initCaptureParameters()
 
     def initCaptureParameters(self):
-        (self.w,self.h) = (3280,2464)
+        (self.w,self.h) = (640,480)
         self.bytesPerFrame = self.w * self.h
         self.fps = 40
         self.videoCmd = "raspividyuv -w "+str(self.w)+" -h "+str(self.h)+" --output - --timeout 0 --framerate "+str(self.fps)+" --luma --nopreview"
         self.videoCmd = self.videoCmd.split()
         self.cameraProcess = sp.Popen(self.videoCmd, stdout=sp.PIPE)
+        atexit.register(self.cameraProcess.terminate)
+        self.font = cv2.FONT_HERSHEY_SIMPLEX
 
     def fpsCalculate(self):
         max_frames = 300
@@ -28,8 +30,8 @@ class Davi:
                 print("Error: Camera stream closed unexpectedly")
                 break
             frame.shape = (self.h,self.w)
-            cv2.imshow('hello',frame)
-            cv2.waitKey(1)
+            # cv2.imshow('hello',frame)
+            # cv2.waitKey(1)
             N_frames += 1
             if N_frames > max_frames: break
 
@@ -55,7 +57,7 @@ class Davi:
             if len(corners) > 0:
                 for i in range(0, len(ids)):
                     c = corners[i][0]
-                    rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.024, matrix_coefficients, distortion_coefficients)
+                    rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.05, matrix_coefficients, distortion_coefficients)
                     (rvec-tvec).any()
                     R=np.zeros((3,3),dtype=np.float64)
                     cv2.Rodrigues(rvec,R)
@@ -77,13 +79,20 @@ class Davi:
                     distancez = (tvec[0][0][2]) 
                     print(distancex,distancey,distancez,rz)
                     print("id",ids[i],[c[:, 0].mean()], [c[:, 1].mean()],rz)
+                    cv2.putText(frame,'deg_z:'+str(rz)+str('deg'),(0, 60), self.font, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                    distancex = (tvec[0][0][0])
+                    cv2.putText(frame, 'distance x:' + str(round(distancex, 4)) + str('m'), (0, 90), self.font, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                    distancey = (tvec[0][0][1]) 
+                    cv2.putText(frame, 'distance y:' + str(round(distancey, 4)) + str('m'), (0, 120), self.font, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                    distancez = (tvec[0][0][2]) 
+                    cv2.putText(frame, 'distance z:' + str(round(distancez, 4)) + str('m'), (0, 150), self.font, 1, (0, 255, 0), 2, cv2.LINE_AA)
             # Mostrar imagem
-            # cv2.imshow('hello',frame)
-            # cv2.waitKey(1)
+            cv2.imshow('hello',frame)
+            cv2.waitKey(1)
 if __name__ == '__main__':
     try:
         OT = Davi()
-        #OT.fpsCalculate()
+        # OT.fpsCalculate()
         OT.objectTracking()
     except KeyboardInterrupt:
         print("Acabou")
